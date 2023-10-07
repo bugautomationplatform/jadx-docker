@@ -20,6 +20,7 @@ jobs:
         id: jadx-docker-tag 
     outputs:
       new-release: ${{ steps.jadx-tag.outputs.tag }} != ${{ steps.jadx-docker-tag.outputs.tag }}
+      release-tag: ${{ steps.jadx-tag.outputs.tag }}
   
   release:
     needs: [check-for-release]
@@ -34,9 +35,16 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          
+
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: bugautomationplatform/jadx:${{ steps.jadx-tag.outputs.tag }}
+          tags: bugautomationplatform/jadx:${{ needs.check-for-release.outputs.release-tag }}
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ needs.check-for-release.outputs.release-tag }}
+          body: |
+            bugautomationplatform/jadx:${{ needs.check-for-release.outputs.release-tag }}
+            https://hub.docker.com/r/bugautomationplatform/jadx
