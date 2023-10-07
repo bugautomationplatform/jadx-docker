@@ -19,12 +19,12 @@ jobs:
           releases-only: true
         id: jadx-docker-tag 
     outputs:
-      new-release: ${{ steps.jadx-tag.outputs.tag }} != ${{ steps.jadx-docker-tag.outputs.tag }}
+      new-release: ${{ steps.jadx-tag.outputs.tag != steps.jadx-docker-tag.outputs.tag }}
       release-tag: ${{ steps.jadx-tag.outputs.tag }}
   
   release:
     needs: [check-for-release]
-    if: needs.check-for-release.outputs.new-release == 'true'
+    if: ${{ needs.check-for-release.outputs.new-release == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Set up Docker Buildx
