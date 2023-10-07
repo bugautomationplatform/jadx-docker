@@ -1,5 +1,5 @@
 # jadx-docker
-Docker image for skylot/jadx
+Docker image for [skylot/jadx](https://github.com/skylot/jadx)
 
 Images for new releases of jadx are built and released automatically on Docker Hub weekly.
 
