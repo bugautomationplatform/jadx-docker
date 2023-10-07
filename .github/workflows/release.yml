@@ -41,6 +41,8 @@ jobs:
         with:
           push: true
           tags: bugautomationplatform/jadx:${{ needs.check-for-release.outputs.release-tag }}
+          build-args: |
+            JADX_TAG=${{ needs.check-for-release.outputs.release-tag }}
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
